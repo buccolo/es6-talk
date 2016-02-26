@@ -1,0 +1,107 @@
+# talk.es6
+
+https://github.com/airbnb/javascript
+https://babeljs.io/
+https://github.com/lukehoban/es6features
+https://www.youtube.com/watch?v=26E9LfXMjao
+
+# ES6 = next javascript?
+not really, es6 and coffee compile to es5.
+browsers have partial support
+
+# Community
+- react
+- google code / lambdas
+
+# ES6 or ES7?
+es7 = draft
+
+# vs Coffeescript
+- What I like about coffee?
+- syntax
+- ===
+- class
+
+# Features
+## Destructuring (Shit!, Coffeescript)
+## reestructuring
+({ currentTarget: {value, el} }) => {
+  el.value(value)
+}
+
+// bad
+function getFullName(user) {
+  const firstName = user.firstName;
+  const lastName = user.lastName;
+
+  return `${firstName} ${lastName}`;
+}
+
+// good
+function getFullName(user) {
+  const { firstName, lastName } = user;
+  return `${firstName} ${lastName}`;
+}
+
+// best
+function getFullName({ firstName, lastName }) {
+  return `${firstName} ${lastName}`;
+}
+
+const arr = [1, 2, 3, 4];
+
+// bad
+const first = arr[0];
+const second = arr[1];
+
+// good
+const [first, second] = arr;
+
+## Implicit returns
+// good
+[1, 2, 3].map(number => `A string containing the ${number}.`);
+## Map
+let productIds = [1, 2, 3];
+
+productIds.map((productId) => {
+  return productId++;
+})
+
+
+## Class / Static
+class ProductGallery {
+  constructor(data) {
+    this.data = data;
+  }
+
+  static getCount() {
+    return this.count;
+  }
+
+  static setCount() {
+    return this.count;
+  }
+
+  display() {
+    this.data.show()
+  }
+}
+
+## Template
+`Hello ${name}, how are you ${time}?`
+
+## Let + Const
+TODO
+
+## Promise
+TODO
+
+## Modules
+NOPE, AP.
+
+## Iterator
+
+### vs React
+class
+defaultProps
+getInitialState
