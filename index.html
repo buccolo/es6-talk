@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js – The HTML Presentation Framework</title>
+		<title>Exploring ECMAScript 6</title>
 
 		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 		<meta name="author" content="Hakim El Hattab">
@@ -38,6 +38,10 @@
       .reveal pre {
         width: 100% !important;
         margin: 20px 0 0 0 !important;
+      }
+
+      .reveal strong {
+        color: #F25251;
       }
     </style>
 
@@ -73,10 +77,28 @@
         <section>
           <h1>Agenda</h1>
           <ol>
-            <li>Introduction to ES6</li>
-            <li>ES6 Features</li>
-            <li>ES6 vs Coffeescript ☕️</li>
+            <li>Introduction to ECMAScript 6</li>
+            <li>ECMAScript 6 Features</li>
+            <li>ECMAScript 6 vs CoffeeScript ☕️</li>
           </ol>
+        </section>
+
+        <section><h1>Introduction to ES6</h1></section>
+
+        <section>
+          <h2>ECMAScript vs JavaScript</h2>
+
+          <ul>
+            <li><strong>JavaScript</strong> was developed in 1995 by Netscape.</li>
+            <li>Microsoft released <strong>VBScript</strong> and <strong>JScript</strong> in 1996.</li>
+            <li>In 1996, Netscape submitted <strong>JavaScript</strong> to Ecma International for consideration as an industry standard.</li>
+            <li>In 1997, Ecma International published <strong>ECMAScript</strong>.</li>
+          </ul>
+
+          <a class="source">http://exploringjs.com/es6/ch_about-es6.html</a>
+          <a class="source">https://en.wikipedia.org/wiki/ECMAScript</a>
+
+          <aside class="notes">10 days. Browser wars.</aside>
         </section>
 
         <section>
@@ -96,7 +118,7 @@
               <tr><td>ECMAScript 4</td><td>July 2008</td><td>Abandoned, release too big</td></tr>
               <tr><td>ECMAScript 5</td><td>December 2009</td><td>Most browsers <u>today</u></td></tr>
               <tr><td>ECMAScript 5.1</td><td>June 2011</td><td>Minor fixes for ISO standard</td></tr>
-              <tr><td>ECMAScript 6 (2015)</td><td>June 2015</td><td>Many cool features, since ES4!</td></tr>
+              <tr><td><strong>ECMAScript 6 (2015)</strong></td><td>June 2015</td><td>Many cool features, since ES4!</td></tr>
               <tr><td>ECMAScript 7 (2016)</td><td>~ June 2016</td><td>Smaller yearly releases, only 2 features!</td></tr>
             </tbody>
           </table>
@@ -121,7 +143,7 @@
         </section>
 
         <section>
-          <p>ECMAScript 6 Browser Support</p>
+          <p>Browser Support (ECMAScript 6)</p>
           <img src="/img/6.png"/>
           <a class="source">https://kangax.github.io/compat-table/es6/</a>
           <aside class="notes">
@@ -132,7 +154,7 @@
         <section>
           <img src="/img/babel.png"/>
           <pre><code>
-Babel(ECMAScript 6) => ECMAScript 5
+Transpile(ECMAScript 6) => JavaScript
           </code></pre>
 <a class="source">https://babeljs.io</a>
 <a class="source">https://github.com/google/traceur-compiler</a>
@@ -140,6 +162,8 @@ Babel(ECMAScript 6) => ECMAScript 5
             <ul>
               <li>Solves entry-barrier</li>
               <li>AWS Lambda old Node (Nov. 2015) http://www.rricard.me/es6/aws/lambda/nodejs/2015/11/29/es6-on-aws-lambda.html</li>
+              <li>Mostly front-end</li>
+              <li>Dependency for generating JS. Old IEs won't ever update.</li>
             </ul>
           </aside>
         </section>
@@ -149,7 +173,11 @@ Babel(ECMAScript 6) => ECMAScript 5
         </section>
 
         <section>
-          <p>Babel @ ES next</p>
+          <img src="/img/babel-gh.png"/>
+        </section>
+
+        <section>
+          <p>Babel: ECMAScript 6 or Newer</p>
           <img src="/img/babel-es7.png"/>
         </section>
 
@@ -165,55 +193,131 @@ Babel(ECMAScript 6) => ECMAScript 5
 
 				<section>
 					<h2>Let vs Const</h2>
-					<pre><code data-trim contenteditable>
-let count = 1;
-count += 1;
+					<pre><code class="js" data-trim contenteditable>
+let count = 1
+count += 1
 
 const number = 1
-number += 1 // BOOM! SyntaxError: "Invalid assignment to const number"
+number += 1 // BOOM!
           </code></pre>
+          <hr/>
+          <img src="/img/const.png"/>
         </section>
 
 				<section>
 					<h2>Block Scope</h2>
-					<pre><code data-trim contenteditable>
-if (event.target) {
-  let value = event.target.value;
-
-  console.log(value); // OK
+					<pre><code class="js" data-trim contenteditable>
+// Bad: `var` (Function scope)
+if (something) {
+  var count = 1
 }
 
-console.log(value); // BOOM! ReferenceError
+console.log(count) // 1
+
+          </code></pre>
+<pre><code class="js" data-trim contenteditable>
+// Good: `let` (Block scope)
+if (something) {
+  let value = 123
+
+  console.log(value)
+}
+
+console.log(value) // Uncaught ReferenceError: value is not defined
 
           </code></pre>
         </section>
 
 				<section>
 					<h2>Set</h2>
-					<pre><code data-trim contenteditable>
-var s = new Set();
-s.add("hello").add("goodbye").add("hello");
-s.size === 2;
-s.has("hello") === true;
+					<pre><code class="js" data-trim contenteditable>
+let set = new Set()
+set.add("hello").add("goodbye").add("hello")
+set.size === 2
+set.has("hello") === true
           </code></pre>
         </section>
 
 				<section>
 					<h2>Map</h2>
-					<pre><code data-trim contenteditable>
-let m = new Map()
-m.set("hello", 42)
-m.set(s, 34)
-m.get(s) === 34
-m.size === 2
-for (let [ key, val ] of m.entries())
-    console.log(key + " = " + val)
+					<pre><code class="js" data-trim contenteditable>
+let map = new Map()
+map.set("hello", 42)
+map.set("goodbye", 34)
+map.get("goodbye") === 34
+map.size === 2
+
+for (let [key, val] of map.entries()) {
+  // hack, hack, hack
+}
           </code></pre>
         </section>
 
         <section>
-          <h2>Iterator / Lazy Sequences</h2>
-          <pre><code data-trim contenteditable>
+					<h2>Destructuring: Objects</h2>
+<pre><code class="js" data-trim contenteditable>
+// handleClick({ target: { x: 1, y: 2 } })
+
+function handleClick(event) {
+  let x = event.target.x
+  let y = event.target.y
+
+  console.log(x, y)
+}
+
+
+function handleClick2(event) {
+  let {x, y} = event.target
+
+  console.log(x, y)
+}
+
+function handleClick3({ target: { x, y } }) {
+  console.log(x, y)
+}
+</code></pre>
+        </section>
+
+        <section>
+					<h2>Destructuring: Arrays</h2>
+<pre><code class="js" data-trim contenteditable>
+let numbers = [1, 5, 10]
+let one = numbers[0]
+let ten = numbers[2]
+
+let [one, , ten] = numbers
+console.log(one, ten) // 1, 10
+
+let [one, five] = numbers
+console.log(one, five) // 1, 5
+
+let [one, ...rest] = numbers
+console.log(one, rest) // 1, [5, 10]
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Generators*</h2>
+          <pre><code class="js" data-trim contenteditable>
+function* generateId(){
+  let index = 0
+
+  while(index < 3) {
+    yield index++
+ }
+}
+
+let generator = generateId()
+
+console.log(generator.next().value); // 0
+console.log(generator.next().value); // 1
+console.log(generator.next().value); // 2
+console.log(generator.next().value); // undefined
+          </code></pre>
+        </section>
+        <section>
+          <h2>Iterator</h2>
+          <pre><code class="js" data-trim contenteditable>
 let fibonacci = {
     [Symbol.iterator]() {
         let pre = 0, cur = 1
@@ -230,7 +334,7 @@ let fibonacci = {
 
 for (let n of fibonacci) {
     if (n > 10) {
-      console.log(n)
+      console.log(n) // 13
       break
     }
 }
@@ -238,32 +342,48 @@ for (let n of fibonacci) {
         </section>
 
 				<section>
-					<h2>Modules *</h2>
-					<pre><code data-trim contenteditable>
-import {sum, pi} from "lib/math";
-alert("2π = " + sum(pi, pi));
+					<h2>Arrow Functions</h2>
+					<pre><code class="js" data-trim contenteditable>
+
+let evens = [0, 2, 4, 6, 8]
+
+let odds = evens.map(even => even + 1) // [1, 3, 5, 7, 9]
+let numbers = evens.map((even, index) => index) // [0, 1, 2, 3, 4]
+
+let fives = numbers.map((number) => {
+  return number * 5
+}) // [0, 5, 10, 15, 20]
           </code></pre>
         </section>
 
 				<section>
-					<h2>Arrow Functions</h2>
-					<pre><code data-trim contenteditable>
-// Expression bodies
-var odds = evens.map(v => v + 1);
-var nums = evens.map((v, i) => v + i);
-var pairs = evens.map(v => ({even: v, odd: v + 1}));
+					<h2>Promises</h2>
+					<pre><code class="js" data-trim contenteditable>
+function after(duration = 0) {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, duration)
+  })
+}
 
-// Statement bodies
-nums.forEach(v => {
-  if (v % 5 === 0)
-    fives.push(v);
-});
+// serial
+after(1000).then(() => {
+  console.log("I'm done!")
+
+  after(2000).then(() => {
+    console.log("I'm done too!")
+  })
+})
+
+// parallel
+Promise.all([after(1000), after(2000)]).then(() => {
+  console.log("We're done!")
+})
           </code></pre>
         </section>
 
 				<section>
 					<h2>String Interpolation</h2>
-					<pre><code data-trim contenteditable>
+					<pre><code class="js" data-trim contenteditable>
 function greeter(name) {
   return `How are you, ${ name }?`
 }
@@ -272,7 +392,7 @@ function greeter(name) {
 
 				<section>
 					<h2>Class</h2>
-					<pre><code data-trim contenteditable>
+					<pre><code class="js" data-trim contenteditable>
 class Shape {
     constructor (id, x, y) {
         this.id = id
@@ -291,7 +411,7 @@ square.move(0, 0)
 				</section>
         <section>
           <h2>Class</h2>
-          <pre><code data-trim contenteditable>
+          <pre><code class="react" contenteditable>
 class Counter extends React.Component {
   constructor(props) {
     super(props)
@@ -305,10 +425,10 @@ class Counter extends React.Component {
 
   render() {
     return (
-      <div onClick={ this.tick.bind(this) }>
+      <div onClick={this.tick.bind(this)}>
         Clicks: {this.state.count }
       </div>
-    );
+    )
   }
 }
 
@@ -322,6 +442,16 @@ Counter.defaultProps = {
           </code></pre>
         </section>
 
+				<section>
+					<h2>Modules *</h2>
+					<pre><code class="js" data-trim contenteditable>
+import {sum, pi} from "lib/math"
+alert("2π = " + sum(pi, pi))
+          </code></pre>
+        </section>
+
+        <section><h1>ECMAScript 6</br>vs</br>CoffeeScript</h1></section>
+
         <section><img src="/img/es6-umbrella.png"/></section>
 
         <section>
@@ -332,8 +462,28 @@ Counter.defaultProps = {
           </aside>
         </section>
 
+        <section>
+          <h2>Language by Environment</h2>
+
+          <ul>
+            <li>Microsoft →  TypeScript</li>
+            <li>Clojure →  ClojureScript</li>
+            <li>Ruby →  CoffeeScript</li>
+          </ul>
+        </section>
+
+        <section><h1>Industry</h1></section>
+
         <section><img src="/img/atom-coffee.png"/></section>
         <section><img src="/img/discourse-coffee.png"/></section>
+        <section><img src="/img/tr-coffee.png"/>
+          <a class="source">https://www.thoughtworks.com/radar/languages-and-frameworks/coffeescript</a>
+        </section>
+        <section><img src="/img/tr-es6.png"/>
+          <a class="source">https://www.thoughtworks.com/radar/languages-and-frameworks/ecmascript-6</a>
+        </section>
+
+        <section><h1>Back to CoffeeScript</h1></section>
 
         <section>
           <img src="/img/coffee-changelog.png"/>
@@ -342,13 +492,28 @@ Counter.defaultProps = {
           </aside>
         </section>
 
-        <section><img src="/img/coffee-es6-interop.png"/></section>
+        <section>
+          <p>Potential interop problems with ES6</p>
+          <img src="/img/coffee-es6-interop.png"/>
+        </section>
 
         <section>
-          <img src="/img/comp2.png"/>
-          <aside class="notes">
-            healthy? es6 compat issues
-          </aside>
+          <section><img src="/img/coffee-commits.png"/></section>
+          <section><img src="/img/babel-commits.png"/></section>
+        </section>
+
+        <section><h1>Conclusion</h1></section>
+
+        <section>
+          <h2>Migrate away from CoffeeScript.</h2>
+
+          <ul>
+            <li>No big supporter.</li>
+            <li>Lack of development and roadmap.</li>
+            <li>Language is stuck.</li>
+            <li>Risk of problems with ES6 code.</li>
+            <li>Not an industry standard.</li>
+          </ul>
         </section>
 			</div>
 		</div>
